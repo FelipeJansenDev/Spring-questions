@@ -95,3 +95,77 @@ Checked exceptions (ex: IOException) não fazem rollback por padrão — precisa
 - d) Pode criar queries automáticas com base na nomenclatura dos métodos
 
 **Resposta Correta:** a) Gera automaticamente implementações de repositórios a partir de interfaces; b) Substitui a necessidade de usar EntityManager na maioria dos casos; d) Pode criar queries automáticas com base na nomenclatura dos métodos
+
+---
+
+### 9. Qual a principal diferença entre o uso de @Component, @Service, @Repository e @Controller no Spring?
+- a) Não existe diferença, todos registram o bean no contexto
+- b) A diferença é apenas semântica e de legibilidade, mas cada um pode ter comportamentos específicos em camadas distintas
+- c) Apenas @Service pode ser usado em transações
+- d) @Controller substitui @RestController
+
+**Resposta correta:** b) A diferença é apenas semântica e de legibilidade, mas cada um pode ter comportamentos específicos em camadas distintas
+
+**Comentário:**
+Embora todos registrem o bean no contexto do Spring, as anotações possuem semântica diferente.
+
+@Component: genérica.
+
+@Service: usada para camada de negócio (facilita entendimento e pode habilitar aspectos como logging ou transações).
+
+@Repository: usada para camada de persistência (habilita tradução de exceções para DataAccessException).
+
+@Controller: usada na camada web para MVC.
+Ou seja, o funcionamento básico é igual, mas cada um traz intenções de uso e comportamentos extras.
+
+---
+
+### 10. Em relação ao ciclo de vida de um bean no Spring, qual é a ordem correta de execução?
+- a) Instanciação → Injeção de dependências → PostConstruct → AfterPropertiesSet → Uso do bean → PreDestroy
+- b) Injeção de dependências → Instanciação → Uso do bean → Destruição
+- c) Instanciação → Uso do bean → PostConstruct → PreDestroy
+- d) Instanciação → PostConstruct → Injeção de dependências → Uso do bean → Destruição
+
+**Resposta correta:** a) Instanciação → Injeção de dependências → PostConstruct → AfterPropertiesSet → Uso do bean → PreDestroy
+
+**Comentário:**
+O ciclo de vida de um bean é bem definido no Spring. Primeiro ocorre a instanciação, depois a injeção de dependências, em seguida chamadas de callbacks como @PostConstruct e InitializingBean#afterPropertiesSet(). Após o uso, antes da remoção, o Spring chama métodos de destruição como @PreDestroy. Isso garante inicialização controlada e cleanup adequado.
+
+---
+
+### 11. O que o @Transactional realmente faz em métodos de serviços no Spring?
+- a) Cria uma nova transação sempre que o método é chamado
+- b) Gerencia o escopo transacional, podendo criar, participar ou marcar rollback de transações existentes
+- c) Apenas garante que os métodos sejam executados em paralelo
+- d) É usado apenas em métodos de repositórios do JPA
+
+**Resposta correta:** b) Gerencia o escopo transacional, podendo criar, participar ou marcar rollback de transações existentes
+
+**Comentário:**
+@Transactional não cria sempre uma nova transação. Ele segue propagações de transação (REQUIRED, REQUIRES_NEW, MANDATORY, etc.), gerencia commits e rollbacks e pode ser aplicado tanto em serviços quanto em repositórios. Além disso, respeita configurações como readOnly e níveis de isolamento.
+
+---
+
+### 12. Qual é a principal vantagem de usar Spring Boot AutoConfiguration?
+- a) Elimina completamente a necessidade de configuração manual
+- b) Garante que nenhum XML seja usado na aplicação
+- c) Fornece configurações padrão baseadas no classpath e propriedades definidas, reduzindo configuração manual
+- d) Substitui totalmente a anotação @Configuration
+
+**Resposta correta:** c) Fornece configurações padrão baseadas no classpath e propriedades definidas, reduzindo configuração manual
+
+**Comentário:**
+O AutoConfiguration do Spring Boot verifica o classpath e aplica configurações padrão para diversos componentes (DataSource, JPA, Security, etc.). Isso diminui a configuração manual, mas não elimina a possibilidade de sobrescrevê-las. Não significa ausência de XML (ainda pode ser usado), e também não substitui @Configuration, que continua sendo válida.
+
+---
+
+### 13. Qual a diferença entre ApplicationContext e BeanFactory?
+- a) Nenhuma, ambos são exatamente iguais
+- b) BeanFactory é mais completo que ApplicationContext
+- c) ApplicationContext é uma extensão de BeanFactory, adicionando suporte a eventos, mensagens e recursos de AOP
+- d) BeanFactory só funciona em XML e ApplicationContext em anotações
+
+**Resposta correta:** c) ApplicationContext é uma extensão de BeanFactory, adicionando suporte a eventos, mensagens e recursos de AOP
+
+**Comentário:**
+O BeanFactory é o contêiner básico de IoC, já o ApplicationContext adiciona funcionalidades como: suporte a eventos de aplicação, resolução de mensagens para i18n, integração com Spring AOP, suporte a anotações como @Autowired e @Qualifier. Hoje, em aplicações modernas, quase sempre usamos o ApplicationContext.
