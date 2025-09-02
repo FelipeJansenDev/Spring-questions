@@ -169,3 +169,134 @@ O AutoConfiguration do Spring Boot verifica o classpath e aplica configurações
 
 **Comentário:**
 O BeanFactory é o contêiner básico de IoC, já o ApplicationContext adiciona funcionalidades como: suporte a eventos de aplicação, resolução de mensagens para i18n, integração com Spring AOP, suporte a anotações como @Autowired e @Qualifier. Hoje, em aplicações modernas, quase sempre usamos o ApplicationContext.
+
+---
+
+### 14. Qual é a principal diferença entre @Component, @Service e @Repository no Spring?
+- a) Não há diferença, todas funcionam exatamente igual  
+- b) @Service é especializado para lógica de negócios e @Repository para acesso a dados, mas todos são estereótipos de @Component  
+- c) @Repository adiciona tratamento automático de exceções de persistência, enquanto @Service e @Component não  
+- d) Tanto b quanto c  
+
+**Resposta correta:** d) Tanto b quanto c  
+
+**Comentário:**  
+As três anotações são estereótipos de @Component e, portanto, registram beans no contexto. @Service é usado para lógica de negócio, @Repository para acesso a dados (com tradução automática de exceções) e @Component é genérico.  
+
+---
+
+### 15. O que o Spring usa para implementar AOP?
+- a) Apenas reflexão de Java  
+- b) Dynamic proxies (JDK) e CGLIB para criar proxies  
+- c) Threads dedicadas para interceptar métodos  
+- d) Anotações @Aspect apenas  
+
+**Resposta correta:** b) Dynamic proxies (JDK) e CGLIB para criar proxies  
+
+**Comentário:**  
+O Spring AOP funciona com proxies. Se a classe tiver interface → JDK dynamic proxies; caso contrário → CGLIB. As anotações apenas definem os pontos de corte, mas quem executa a lógica são os proxies.  
+
+---
+
+### 16. Qual a diferença entre ApplicationContext e BeanFactory?
+- a) Nenhuma, ambos são exatamente iguais  
+- b) BeanFactory é mais completo que ApplicationContext  
+- c) ApplicationContext é uma extensão de BeanFactory, adicionando suporte a eventos, mensagens e recursos de AOP  
+- d) BeanFactory só funciona em XML e ApplicationContext em anotações  
+
+**Resposta correta:** c) ApplicationContext é uma extensão de BeanFactory, adicionando suporte a eventos, mensagens e recursos de AOP  
+
+**Comentário:**  
+BeanFactory é o contêiner básico. ApplicationContext adiciona recursos como eventos, i18n, integração com AOP, suporte a anotações (@Autowired, @Qualifier). É o mais usado em aplicações modernas.  
+
+---
+
+### 17. Quais métodos podem ser usados para customizar o ciclo de vida de um bean?
+- a) @PostConstruct e @PreDestroy  
+- b) Implementando InitializingBean e DisposableBean  
+- c) Usando métodos customizados via @Bean(initMethod, destroyMethod)  
+- d) Todas as anteriores  
+
+**Resposta correta:** d) Todas as anteriores  
+
+**Comentário:**  
+O Spring permite customizar o ciclo de vida de várias formas: anotações (@PostConstruct, @PreDestroy), interfaces (InitializingBean, DisposableBean) e métodos definidos no @Bean.  
+
+---
+
+### 18. Qual tipo de injeção é mais recomendado pelo Spring?
+- a) Field Injection (@Autowired diretamente no atributo)  
+- b) Setter Injection  
+- c) Constructor Injection  
+- d) Nenhuma, todas são igualmente recomendadas  
+
+**Resposta correta:** c) Constructor Injection  
+
+**Comentário:**  
+Constructor injection é a mais recomendada porque promove imutabilidade, facilita testes e garante que as dependências sejam fornecidas logo na inicialização. Field injection é considerada má prática.  
+
+---
+
+### 19. Como o Spring implementa o controle transacional com @Transactional?
+- a) Usando proxies que envolvem o método e iniciam/commitam/rollback transações  
+- b) Criando threads dedicadas para cada transação  
+- c) Apenas com JDBC puro  
+- d) Usando reflection sem proxies  
+
+**Resposta correta:** a) Usando proxies que envolvem o método e iniciam/commitam/rollback transações  
+
+**Comentário:**  
+@Transactional é implementado via AOP. O proxy intercepta o método, abre a transação, executa e decide commit ou rollback conforme o resultado.  
+
+---
+
+### 20. Qual escopo é padrão no Spring e qual cria um novo bean a cada requisição HTTP?
+- a) prototype / session  
+- b) singleton / request  
+- c) singleton / prototype  
+- d) request / application  
+
+**Resposta correta:** b) singleton / request  
+
+**Comentário:**  
+O escopo padrão é **singleton** (um bean por ApplicationContext). O escopo **request** cria um bean novo a cada requisição HTTP, muito usado em aplicações web.
+
+---
+
+
+### 21. O que o Spring Boot faz ao usar @SpringBootApplication?
+- a) Apenas inicializa o servidor embutido  
+- b) É equivalente a usar @Configuration, @EnableAutoConfiguration e @ComponentScan  
+- c) Carrega somente os beans marcados com @Service  
+- d) Configura apenas o banco de dados automaticamente  
+
+**Resposta correta:** b) É equivalente a usar @Configuration, @EnableAutoConfiguration e @ComponentScan  
+
+**Comentário:**  
+@SpringBootApplication é um atalho para essas três anotações, permitindo autoconfiguração, registro de beans e varredura automática de componentes no pacote base.  
+
+---
+
+### 22. Para que servem os Spring Profiles?
+- a) Separar beans por ambientes (dev, test, prod)  
+- b) Melhorar a performance de consultas SQL  
+- c) Configurar threads diferentes para cada serviço  
+- d) Definir roles de segurança para usuários  
+
+**Resposta correta:** a) Separar beans por ambientes (dev, test, prod)  
+
+**Comentário:**  
+Profiles permitem ativar configurações específicas de acordo com o ambiente. Exemplo: `@Profile("dev")` ativa um bean apenas no ambiente de desenvolvimento.  
+
+---
+
+### 23. Como aplicar segurança baseada em roles em métodos do Spring?
+- a) Usando apenas filtros no web.xml  
+- b) Usando @RolesAllowed, @Secured ou @PreAuthorize  
+- c) Configurando exclusivamente via application.properties  
+- d) Apenas com autenticação básica (BasicAuth)  
+
+**Resposta correta:** b) Usando @RolesAllowed, @Secured ou @PreAuthorize  
+
+**Comentário:**  
+Spring Security permite segurança declarativa em nível de método. Com @Secured("ROLE_ADMIN") ou @PreAuthorize("hasRole('ADMIN')"), é possível restringir acesso conforme a role do usuário.  
